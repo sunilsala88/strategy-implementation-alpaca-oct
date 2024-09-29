@@ -90,6 +90,9 @@ def close_this_position(ticker_name):
         c=trading_client.close_position(ticker_name)
         print(c)
         print('position closed')
+        a=[ticker_name,closing_price,'SELL']
+        order_filled_dataframe.loc[pdt.now('UTC')] = a
+        order_filled_dataframe.to_csv('order_filled_list.csv')
     except:
         print('position does not exist')
 
@@ -107,6 +110,10 @@ def trade_buy_stocks(ticker,closing_price):
     market_order = trading_client.submit_order(
                     order_data=market_order_data
                 )
+    a=[ticker,closing_price,'BUY']
+    order_filled_dataframe.loc[pdt.now('UTC')] = a
+    order_filled_dataframe.to_csv('order_filled_list.csv')
+    
 
 def trade_sell_stocks(ticker,closing_price):
     print('placing market order')
@@ -122,7 +129,9 @@ def trade_sell_stocks(ticker,closing_price):
     market_order = trading_client.submit_order(
                     order_data=market_order_data
                 )
-
+    a=[ticker,closing_price,'SELL']
+    order_filled_dataframe.loc[pdt.now('UTC')] = a
+    order_filled_dataframe.to_csv('order_filled_list.csv')
 
 def strategy(hist_df,ticker,high_level,low_level):
     print('inside strategy conditional code ')
